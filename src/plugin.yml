@@ -1,0 +1,8 @@
+name: Spik
+version: 1.0.0
+author: Symbiosis
+main: be.symbiosis.spik.Spik
+depend: [Citizens]
+commands:
+  target:
+    description: Cette commande permet de lancer une animation aléatoire

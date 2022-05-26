@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="Spik:jar">
+    <output-path>$USER_HOME$/OneDrive/Bureau/Craftbukkit/plugins</output-path>
+    <root id="root">
+      <element id="archive" name="Spik.jar">
+        <element id="module-output" name="Spik" />
+      </element>
+    </root>
+  </artifact>
+</component>
