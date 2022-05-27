@@ -35,7 +35,7 @@ public class Utils {
                 }else if(timer1 == 17) {
                     arrows.add(createNPC(player.getLocation().add(5, 1, 0)));
                 }else if(timer1 == 16) {
-                    arrows.add(createNPC(player.getLocation().add(5, 1, 5)));
+                    arrows.add(createNPC(loc.add(5, 1, 5)));
                 } else if (timer1 == 15) {
                     arrows.add(createNPC(player.getLocation().add(0, 1, 5)));
                 }else if(timer1 == 14) {
@@ -45,7 +45,7 @@ public class Utils {
                 }else if(timer1 == 12) {
                     arrows.add(createNPC(player.getLocation().add(-5, 1, -5)));
                 } else if (timer1 == 11) {
-                    arrows.add(createNPC(player.getLocation().add( 0, 1, -5)));
+                    arrows.add(createNPC(loc.add( 0, 1, -5)));
                 }
                 else if(timer1 == 9) {
                     for(int x = 0; x < arrows.size();) {
@@ -59,8 +59,8 @@ public class Utils {
                     for(int xx = 0; xx < arrows.size();) {
                         Entity arroww = arrows.get(xx);
                         arroww.remove();
-                        player.getWorld().strikeLightningEffect(player.getLocation());
-                        player.getWorld().spawnParticle(Particle.SOUL, player.getLocation().add(0, -1, 0), 30);
+                        player.getWorld().strikeLightningEffect(loc);
+                        player.getWorld().spawnParticle(Particle.SOUL, loc.add(0, -1, 0), 30);
                         xx++;
                     }
                     player.setHealth(0.0D);
@@ -79,24 +79,24 @@ public class Utils {
             @Override
             public void run() {
                 if(timer == 9) {
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,0, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,0, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, 1,0, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, -1,0, 0);
 
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,1, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,1, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, 1,1, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, -1,1, 0);
 
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,2, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,2, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, 1,2, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, -1,2, 0);
 
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,3, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,3, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 0,3, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, 1,3, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, -1,3, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_FENCE, 0,3, 0);
 
-                    createBlockAtPos(player, Material.DARK_OAK_SLAB, 0,4, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_SLAB, 1,4, 0);
-                    createBlockAtPos(player, Material.DARK_OAK_SLAB, -1,4, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_SLAB, 0,4, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_SLAB, 1,4, 0);
+                    createBlockAtPos(loc, Material.DARK_OAK_SLAB, -1,4, 0);
 
-                    player.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, player.getLocation(), 1000);
+                    player.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, 1000);
                 }else if(timer == 8) {
                     player.teleport(new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1.3, player.getLocation().getZ(), 180, 0));
                     player.setAllowFlight(true);
@@ -105,34 +105,35 @@ public class Utils {
                     Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1, player.getLocation().getZ()-12.5);
                     cannon.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, cannon, 1000);
 
-                    createBlockAtPos(player, Material.POLISHED_BLACKSTONE_BUTTON, 0, 1, 9);
+                    createBlockAtPos(loc, Material.POLISHED_BLACKSTONE_BUTTON, 0, 1, 9);
 
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -10);
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -11);
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -12);
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -13);
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -14);
-                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -15);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -10);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -11);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -12);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -13);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -14);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 0, 0, -15);
 
-                    createBlockAtPos(player, Material.COAL_BLOCK, 1, 0, -13);
-                    createBlockAtPos(player, Material.COAL_BLOCK, -1, 0, -13);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 1, 0, -13);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, -1, 0, -13);
 
-                    createBlockAtPos(player, Material.COAL_BLOCK, 1, 0, -14);
-                    createBlockAtPos(player, Material.COAL_BLOCK, -1, 0, -14);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, 1, 0, -14);
+                    createBlockAtPos(loc, Material.COAL_BLOCK, -1, 0, -14);
 
-                    createBlockAtPos(player, Material.SPRUCE_FENCE, 0, 1, -12);
-                    createBlockAtPos(player, Material.CHISELED_NETHER_BRICKS, 0, 1, -13);
-                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 0, 1, -14);
+                    createBlockAtPos(loc, Material.SPRUCE_FENCE, 0, 1, -12);
+                    createBlockAtPos(loc, Material.CHISELED_NETHER_BRICKS, 0, 1, -13);
+                    createBlockAtPos(loc, Material.NETHER_BRICK_SLAB, 0, 1, -14);
 
-                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 0, -12);
-                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 0, -12);
-                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 0, -15);
-                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 0, -15);
+                    createBlockAtPos(loc, Material.NETHER_BRICK_SLAB, 1, 0, -12);
+                    createBlockAtPos(loc, Material.NETHER_BRICK_SLAB, -1, 0, -12);
+                    createBlockAtPos(loc, Material.NETHER_BRICK_SLAB, 1, 0, -15);
+                    createBlockAtPos(loc, Material.NETHER_BRICK_SLAB, -1, 0, -15);
 
-                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, -1, -12);
-                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, -1, -12);
-                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, -1, -15);
-                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, -1, -15);
+                    createBlockAtPos(loc, Material.DARK_OAK_LOG, 1, -1, -12);
+                    createBlockAtPos(loc, Material.DARK_OAK_LOG, -1, -1, -12);
+                    createBlockAtPos(loc, Material.DARK_OAK_LOG, 1, -1, -15);
+                    createBlockAtPos(loc, Material.DARK_OAK_LOG, -1, -1, -15);
+
                 }else if(timer == 6 || timer == 5 || timer == 4 || timer == 3) {
                     Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1, player.getLocation().getZ()-9);
                         if(timer == 6) {
@@ -163,7 +164,7 @@ public class Utils {
         }.runTaskTimer(Spik.INSTANCE, 0, 20);
     }
 
-    public static void playAnimationFallingDown(Player player) {
+    public static void playAnimationFallingDown(Player player, Location loc) {
         new BukkitRunnable() {
             int timer = 0;
             World world = player.getWorld();

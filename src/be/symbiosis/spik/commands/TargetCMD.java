@@ -9,9 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import sun.security.provider.ConfigFile;
 
-import java.util.Locale;
+import java.util.*;
 
 public class TargetCMD implements CommandExecutor {
+    List<String> animationList = new ArrayList<>();
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
