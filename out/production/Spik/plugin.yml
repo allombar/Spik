@@ -6,3 +6,5 @@ depend: [Citizens]
 commands:
   target:
     description: Cette commande permet de lancer une animation aléatoire
+  anim:
+    description: Permet de mettre une position au animation

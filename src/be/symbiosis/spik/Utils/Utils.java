@@ -78,29 +78,84 @@ public class Utils {
             int timer = 10;
             @Override
             public void run() {
-                //player.getWorld().spawnFallingBlock(player.getLocation(), Material.BONE_BLOCK);
-                if(timer == 10) {
-                    //cage
-                    createBlockSpawn(loc.add(1, 0, 0), Material.ACACIA_FENCE);
-                    createBlockSpawn(loc.add(-2, 0, 0), Material.ACACIA_FENCE);
+                if(timer == 9) {
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,0, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,0, 0);
 
-                    createBlockSpawn(loc.add(1, 1, 0), Material.ACACIA_FENCE);
-                    createBlockSpawn(loc.add(-2, 1, 0), Material.ACACIA_FENCE);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,1, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,1, 0);
 
-                    createBlockSpawn(loc.add(1, 2, 0), Material.ACACIA_FENCE);
-                    createBlockSpawn(loc.add(-2, 2, 0), Material.ACACIA_FENCE);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,2, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,2, 0);
 
-                    createBlockSpawn(loc.add(1, 3, 0), Material.ACACIA_FENCE);
-                    createBlockSpawn(loc.add(-2, 3, 0), Material.ACACIA_FENCE);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 1,3, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, -1,3, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_FENCE, 0,3, 0);
 
-                    createBlockSpawn(loc.add(1, 4, 0), Material.ACACIA_FENCE);
-                    createBlockSpawn(loc.add(-2, 4, 0), Material.ACACIA_FENCE);
-                    loc.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, loc, 500);
-                }else if(timer == 9) {
-                    player.teleport(loc.add(1, 1.5, 0));
-                }
+                    createBlockAtPos(player, Material.DARK_OAK_SLAB, 0,4, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_SLAB, 1,4, 0);
+                    createBlockAtPos(player, Material.DARK_OAK_SLAB, -1,4, 0);
 
-                if(timer == 0) {
+                    player.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, player.getLocation(), 1000);
+                }else if(timer == 8) {
+                    player.teleport(new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1.3, player.getLocation().getZ(), 180, 0));
+                    player.setAllowFlight(true);
+                    player.setFlying(true);
+                }else if(timer == 7) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1, player.getLocation().getZ()-12.5);
+                    cannon.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, cannon, 1000);
+
+                    createBlockAtPos(player, Material.POLISHED_BLACKSTONE_BUTTON, 0, 1, 9);
+
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -10);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -11);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -12);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -13);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -14);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 0, -15);
+
+                    createBlockAtPos(player, Material.COAL_BLOCK, 1, 0, -13);
+                    createBlockAtPos(player, Material.COAL_BLOCK, -1, 0, -13);
+
+                    createBlockAtPos(player, Material.COAL_BLOCK, 1, 0, -14);
+                    createBlockAtPos(player, Material.COAL_BLOCK, -1, 0, -14);
+
+                    createBlockAtPos(player, Material.SPRUCE_FENCE, 0, 1, -12);
+                    createBlockAtPos(player, Material.CHISELED_NETHER_BRICKS, 0, 1, -13);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 0, 1, -14);
+
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 0, -12);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 0, -12);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 0, -15);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 0, -15);
+
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, -1, -12);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, -1, -12);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, -1, -15);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, -1, -15);
+                }else if(timer == 6 || timer == 5 || timer == 4 || timer == 3) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1, player.getLocation().getZ()-9);
+                        if(timer == 6) {
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1.0F);
+                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                        }else if(timer == 5) {
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.YELLOW, 2.0F);
+                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                        }else if(timer == 4) {
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 3.0F);
+                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                        }else if(timer == 3) {
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                        }
+                }else if(timer == 2) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+1, player.getLocation().getZ()-9);
+                    Entity entity = createNPC(cannon);
+                    entity.setVelocity(VectorArrowToTarget(cannon, player));
+                }else if(timer == 1) {
+                    player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, player.getLocation(), 50);
+                    player.setHealth(0.0);
+                }else if(timer == 0) {
                     this.cancel();
                 }
                 timer--;
@@ -115,13 +170,114 @@ public class Utils {
             @Override
             public void run () {
                 if (timer <= 9) {
-                    Vector vec = player.getVelocity();
-                    player.teleport(new Location(player.getWorld(), player.getLocation().getX() + getRandomNumber(-5, 5), world.getHighestBlockYAt(0, 0) + getRandomNumber(10, 25), player.getLocation().getZ()  + getRandomNumber(-5, 5)));
-                    player.setVelocity(vec);
+                    player.setVelocity(new Location(player.getWorld(), player.getLocation().getX() - player.getLocation().getX() + getRandomNumber(-50, 50), world.getHighestBlockYAt(0, 0) - world.getHighestBlockYAt(0, 0) + getRandomNumber(-25, 25), player.getLocation().getZ() - player.getLocation().getZ() + getRandomNumber(-50, 50)).toVector());
                     player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 500);
                 }
                 if (timer == 10) {
-                    player.setVelocity(player.getLocation().multiply(2).toVector().setY(-2));
+                    this.cancel();
+                }
+                timer++;
+            }
+        }.runTaskTimer(Spik.INSTANCE, 0, 10);
+    }
+
+    public static void playHumanCanonAnimation(Player player) {
+        new BukkitRunnable() {
+            int timer = 0;
+            @Override
+            public void run() {
+                if (timer == 0) {
+                    player.hidePlayer(Spik.INSTANCE, player);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 1);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 2);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 3);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 4);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 5);
+                    createBlockAtPos(player, Material.COAL_BLOCK, 0, 1, 6);
+
+                    createBlockAtPos(player, Material.SPRUCE_FENCE, 0, 2, 3);
+                    createBlockAtPos(player, Material.CHISELED_NETHER_BRICKS, 0, 2, 4);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 0, 2, 5);
+
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 1, 3);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 1, 3);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, 1, 1, 6);
+                    createBlockAtPos(player, Material.NETHER_BRICK_SLAB, -1, 1, 6);
+
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, 0, 3);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, 0, 3);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, 1, 0, 6);
+                    createBlockAtPos(player, Material.DARK_OAK_LOG, -1, 0, 6);
+                } else if (timer == 1) {
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -1, 12, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 1, 12, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 12, -22);
+
+                    createBlockAtPos(player, Material.RED_CONCRETE, -1, 11, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 1, 11, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 0, 11, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -2, 11, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 2, 11, -22);
+
+                    createBlockAtPos(player, Material.RED_CONCRETE, -1, 10, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 1, 10, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 10, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -2, 10, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 2, 10, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -3, 10, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 3, 10, -22);
+
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -1, 9, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 1, 9, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 9, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -2, 9, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 2, 9, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -3, 9, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 3, 9, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -4, 9, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 4, 9, -22);
+
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -1, 8, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 1, 8, -22);
+                    createBlockAtPos(player, Material.REDSTONE_BLOCK, 0, 8, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -2, 8, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 2, 8, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -3, 8, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 3, 8, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -4, 8, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 4, 8, -22);
+
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -1, 7, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 1, 7, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 7, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -2, 7, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 2, 7, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -3, 7, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 3, 7, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -4, 7, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 4, 7, -22);
+
+                    createBlockAtPos(player, Material.RED_CONCRETE, -1, 6, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 1, 6, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 6, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, -2, 6, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 2, 6, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -3, 6, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 3, 6, -22);
+
+                    createBlockAtPos(player, Material.RED_CONCRETE, -1, 5, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 1, 5, -22);
+                    createBlockAtPos(player, Material.RED_CONCRETE, 0, 5, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -2, 5, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 2, 5, -22);
+
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, -1, 4, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 1, 4, -22);
+                    createBlockAtPos(player, Material.QUARTZ_BLOCK, 0, 4, -22);
+                    player.setVelocity(new Vector(0, 1, -200).multiply(4));
+                }
+                if (timer == 10) {
+                    player.showPlayer(Spik.INSTANCE, player);
                     this.cancel();
                 }
                 timer++;

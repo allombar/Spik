@@ -15,6 +15,7 @@ import java.util.List;
 public class Spik extends JavaPlugin {
 
     private File file;
+    private File fileCuboid;
     private YamlConfiguration config;
     public List<Player> playersInAnimation = new ArrayList<Player>();
     public static Spik INSTANCE;
@@ -22,7 +23,6 @@ public class Spik extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         INSTANCE = this;
         //commandes
         getCommand("target").setExecutor(new TargetCMD());

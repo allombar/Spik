@@ -6,11 +6,11 @@ import org.bukkit.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeathManager {
+public class CuboidManager {
         public Location minLoc, maxLoc;
         public String name;
 
-        public DeathManager(Location firstPoint, Location secondPoint, String name, String chef) {
+        public CuboidManager(Location firstPoint, Location secondPoint, String name, Location playerLoc) {
             minLoc = new Location(firstPoint.getWorld(), min(firstPoint.getX(), secondPoint.getX()), min(firstPoint.getY(), secondPoint.getY()), min(firstPoint.getZ(), secondPoint.getZ()));
             maxLoc = new Location(firstPoint.getWorld(), max(firstPoint.getX(), secondPoint.getX()), max(firstPoint.getY(), secondPoint.getY()), max(firstPoint.getZ(), secondPoint.getZ()));
             this.name = name;
