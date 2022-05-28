@@ -47,7 +47,7 @@ public class CuboidListeners implements Listener {
 
                     gp.setPos2(e.getClickedBlock().getLocation());
 
-                    if(gp.getPos1().distance(gp.getPos2()) > 15 || !gp.getPos1().getWorld().getName().equals(gp.getPos2().getWorld().getName())) {
+                    if(gp.getPos1().distance(gp.getPos2()) < 15 || !gp.getPos1().getWorld().getName().equals(gp.getPos2().getWorld().getName())) {
                         player.sendMessage("§4Erreur: §cVous en pouvez pas faire cela !");
                         gp.setPos1(null);
                         gp.setPos2(null);
