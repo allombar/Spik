@@ -10,3 +10,4 @@ commands:
     description: Permet de mettre une position au animation
   cuboid:
     description: Permet de niquer ta mère
+api-version: 1.16

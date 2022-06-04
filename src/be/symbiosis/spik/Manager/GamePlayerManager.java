@@ -7,16 +7,16 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GamePlayer {
+public class GamePlayerManager {
 
-    private Player player;
+    private final Player player;
 
     private Location pos1;
     private Location pos2;
 
-    public static Map<String, GamePlayer> gamePlayers = new HashMap<>();
+    public static Map<String, GamePlayerManager> gamePlayers = new HashMap<>();
 
-    public GamePlayer(String playerName) {
+    public GamePlayerManager(String playerName) {
         this.player = Bukkit.getPlayer(playerName);
 
         gamePlayers.put(player.getName(), this);

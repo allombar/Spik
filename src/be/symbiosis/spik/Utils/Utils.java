@@ -1,35 +1,31 @@
 package be.symbiosis.spik.Utils;
 
-import be.symbiosis.spik.Manager.AnimationManager;
+import be.symbiosis.spik.Manager.Animation.Animation;
+import be.symbiosis.spik.Manager.Animation.AnimationManager;
 import be.symbiosis.spik.Manager.CuboidManager;
 import be.symbiosis.spik.Spik;
+import be.symbiosis.spik.SpikCore;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.TileState;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Levelled;
+import org.bukkit.Color;
 import org.bukkit.entity.*;
-import org.bukkit.event.block.CauldronLevelChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Cauldron;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.yaml.snakeyaml.Yaml;
-import sun.security.provider.ConfigFile;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Utils {
-    public static void playAnimationArrow(Player player, AnimationManager animationManager) {
+    public static void playAnimationArrow(Player player, Animation animation) {
         List<Entity> arrows = new ArrayList<>();
         World world = player.getWorld();
-        Location loc = Spik.getINSTANCE().parseStringToLoc(Spik.getINSTANCE().getConfig().getString("animations.arrow.pos"), world);
+        Location loc = parseStringToLoc(AnimationManager.getConfig().getString("animations.arrow.pos"), world);
 
         new BukkitRunnable() {
             int timer1 = 20;
@@ -43,7 +39,7 @@ public class Utils {
                     player.setAllowFlight(true);
                     player.setFlying(true);
                 } else if(timer1 == 18) {
-                    animationManager.setPlayer(player);
+                    animation.setPlayer(player);
                     Entity arrow = createNPC(player.getLocation().add(5, 1, -5));
                     arrows.add(arrow);
                 }else if(timer1 == 17) {
@@ -77,8 +73,8 @@ public class Utils {
                         player.getWorld().spawnParticle(Particle.SOUL, loc.add(0, -1, 0), 30);
                         xx++;
                     }
-                    animationManager.setStarded(false);
-                    animationManager.setPlayer(null);
+                    animation.setStarted(false);
+                    animation.setPlayer(null);
                     player.setHealth(0.0D);
                     arrows.clear();
                     player.setFlying(false);
@@ -89,10 +85,10 @@ public class Utils {
                 }
                 timer1--;
             }
-        }.runTaskTimer(Spik.INSTANCE, 0 , 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0 , 20);
     }
 
-    public static void playAnimationCanon(Player player, Location loc, AnimationManager animationManager) {
+    public static void playAnimationCanon(Player player, Location loc, Animation animation) {
         List<Entity> fireball = new ArrayList<>();
         List<Location> block = new ArrayList<>();
         new BukkitRunnable(){
@@ -125,7 +121,7 @@ public class Utils {
                     player.setAllowFlight(true);
                     player.setFlying(true);
                 }else if(timer == 7) {
-                    animationManager.setPlayer(player);
+                    animation.setPlayer(player);
                     Location cannon = new Location(player.getWorld(), player.getLocation().getX()+0.5, player.getLocation().getY()+0.5, player.getLocation().getZ()-12.5);
                     cannon.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, cannon, 1000);
 
@@ -191,8 +187,8 @@ public class Utils {
                         }
                     }
                 }else if(timer == 0) {
-                    animationManager.setStarded(false);
-                    animationManager.setPlayer(null);
+                    animation.setStarted(false);
+                    animation.setPlayer(null);
                     player.setFlying(false);
                     if(!player.isOp()) {
                         player.setAllowFlight(false);
@@ -202,13 +198,13 @@ public class Utils {
                 }
                 timer--;
             }
-        }.runTaskTimer(Spik.INSTANCE, 0, 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
-    public static void playAnimationFallingDown(Player player, Location loc, AnimationManager animationManager) {
+    public static void playAnimationFallingDown(Player player, Location loc, Animation animation) {
         new BukkitRunnable() {
             int timer = 0;
-            World world = player.getWorld();
+            final World world = player.getWorld();
             @Override
             public void run () {
                 if (timer <= 9) {
@@ -223,10 +219,10 @@ public class Utils {
                 }
                 timer++;
             }
-        }.runTaskTimer(Spik.INSTANCE, 0, 10);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 10);
     }
 
-    public static void playHumanCanonAnimation(Player player, Location loc, AnimationManager animationManager) {
+    public static void playHumanCanonAnimation(Player player, Location loc, Animation animation) {
         List<Location> block = new ArrayList<>();
         new BukkitRunnable() {
             int timer = 0;
@@ -234,7 +230,7 @@ public class Utils {
             public void run() {
                 if (timer == 0) {
                     player.teleport(loc);
-                    player.hidePlayer(Spik.INSTANCE, player);
+                    player.hidePlayer(SpikCore.GetInstance(), player);
                     block.add(createBlockAtPos(loc, Material.COAL_BLOCK, 0, 1, 1));
                     block.add(createBlockAtPos(loc, Material.COAL_BLOCK, 0, 1, 2));
                     block.add(createBlockAtPos(loc, Material.COAL_BLOCK, 0, 1, 3));
@@ -274,7 +270,7 @@ public class Utils {
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -3, 10, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 3, 10, -22));
 
-                    block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -1, 9, -22));;
+                    block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -1, 9, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 1, 9, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 0, 9, -22));
                     block.add(createBlockAtPos(loc, Material.RED_CONCRETE, -2, 9, -22));
@@ -322,7 +318,7 @@ public class Utils {
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 1, 4, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 0, 4, -22));
                     player.setVelocity(new Vector(0, 1, -200).multiply(4));
-                    player.showPlayer(Spik.INSTANCE, player);
+                    player.showPlayer(SpikCore.GetInstance(), player);
                 } else if (timer == 2) {
                     block.forEach(item -> {
                         item.getBlock().setType(Material.AIR);
@@ -334,36 +330,34 @@ public class Utils {
                 }
                 timer++;
             }
-        }.runTaskTimer(Spik.INSTANCE, 0, 10);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 10);
     }
 
-    public static void playCuboidAnimation(Player player, CuboidManager cuboidManager, AnimationManager animationManager) {
-        cuboidManager.setPlayer(player);
-        animationManager.setStarded(true);
+    public static void playCuboidAnimation(Player player, CuboidManager cuboidManager, Animation animation) {
+        animation.setStarted(true);
         new BukkitRunnable(){
             int timer = 10;
             @Override
             public void run() {
                 if(timer == 10) {
                     Location loc = cuboidManager.getMiddle();
-                    player.teleport(loc.add(0, 1, 0));
+                    player.teleport(loc.add(0.5, 1, 0.5));
                     player.setSwimming(true);
-                    animationManager.setPlayer(player);
-                    player.getWorld().getBlockAt(player.getLocation().add(0, 4, 0)).setType(Material.WATER);
+                    player.getWorld().getBlockAt(player.getLocation().add(0, 5, 0)).setType(Material.WATER);
                     player.getWorld().spawnParticle(Particle.FALLING_WATER, player.getLocation().add(0, 4, 0), 500);
                 }else if(timer == 9) {
-                    cuboidManager.SetBlockOnCuboid(Material.WATER, 1);
+                    addBlock(cuboidManager.SetBlockOnCuboid(0), Material.WATER);
+                    animation.setPlayer(player);
                 }else if(timer == 8) {
-                    cuboidManager.SetBlockOnCuboid(Material.WATER, 2);
+                    addBlock(cuboidManager.SetBlockOnCuboid(1), Material.WATER);
                 }else if(timer == 7) {
-                    cuboidManager.SetBlockOnCuboid(Material.WATER, 3);
+                    addBlock(cuboidManager.SetBlockOnCuboid(2), Material.WATER);
                 }else if(timer == 6) {
-                    cuboidManager.SetBlockOnCuboid(Material.WATER, 4);
+                    addBlock(cuboidManager.SetBlockOnCuboid(3), Material.WATER);
                 }else if(timer == 5) {
-                    cuboidManager.SetBlockOnCuboid(Material.WATER, 5);
+                    addBlock(cuboidManager.SetBlockOnCuboid(4), Material.WATER);
                 }else if(timer == 4) {
-                    player.setHealth(8);
-                    player.setSwimming(false);
+                    addBlock(cuboidManager.SetBlockOnCuboid(4), Material.WATER);
                 }else if(timer == 3) {
                     player.setHealth(6);
                     player.setSwimming(true);
@@ -376,56 +370,56 @@ public class Utils {
                 }else if(timer == 0) {
                     player.setSwimming(false);
                     player.setHealth(0);
-                    cuboidManager.setPlayer(null);
-                    animationManager.setPlayer(null);
-                    animationManager.setStarded(false);
+                    animation.setPlayer(null);
+                    animation.setStarted(false);
                     removeBlock(cuboidManager.getArea());
+                    this.cancel();
                 }
                 timer--;
             }
-        }.runTaskTimerAsynchronously(Spik.getINSTANCE(), 0, 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
 
 
     }
 
-    public static void playerCuboidPiranaAnimation(Player player, CuboidManager cuboidManager, AnimationManager animationManager) {
-        cuboidManager.setPlayer(player);
-        animationManager.setStarded(true);
+    public static void playerCuboidPiranaAnimation(Player player, CuboidManager cuboidManager, Animation animation) {
+        animation.setStarted(true);
         List<Entity> piranas = new ArrayList<>();
         new BukkitRunnable(){
-            int timer = 7;
+            int timer = 10;
             @Override
             public void run() {
-                if(timer == 7) {
-
+                if(timer == 10) {
                     Location loc = cuboidManager.getMiddle();
                     player.teleport(loc.add(0, 1, 0));
-                    animationManager.setPlayer(player);
-                }else if(timer == 6) {
-                    for(int x=0;x<10;x++) {
+                    animation.setPlayer(player);
+                    for(int x=0;x<20;x++) {
                         player.getWorld().spawnParticle(Particle.LANDING_LAVA, player.getLocation().add(0, 4, 0), 50);
                         Entity entity = player.getWorld().spawnEntity(player.getLocation().add(0, 4, 0), EntityType.SALMON);
                         entity.setGlowing(true);
                         entity.setCustomNameVisible(true);
-                        entity.setCustomName("§4PIRANA");
-                        entity.setInvulnerable(true);
+                        entity.setCustomName("§4PIRANHA");
                         piranas.add(entity);
                     }
+                }else if(timer == 9) {
+                    addBlock(cuboidManager.SetBlockOnCuboid(0), Material.WATER);
+                }else if(timer == 8) {
+                    addBlock(cuboidManager.SetBlockOnCuboid(1), Material.WATER);
+                }else if(timer == 7) {
+                    addBlock(cuboidManager.SetBlockOnCuboid(2), Material.WATER);
+                }else if(timer == 6) {
+                    addBlock(cuboidManager.SetBlockOnCuboid(3), Material.WATER);
                 }else if(timer == 5) {
-                    player.getWorld().spawnParticle(Particle.FALLING_WATER, player.getLocation().add(0, 4, 0), 500);
+                    addBlock(cuboidManager.SetBlockOnCuboid(4), Material.WATER);
                 }else if(timer == 4) {
-                    for(Entity entity : piranas) {
-                        entity.setVelocity(VectorArrowToTarget(entity.getLocation(), player));
-                    }
+                    addBlock(cuboidManager.SetBlockOnCuboid(5), Material.WATER);
                 }else if(timer == 3) {
                     for(Entity entity : piranas) {
-                        Random ran = new Random();
-                        int x = ran.nextInt(5);
-                        int y = ran.nextInt(3);
-                        int z = ran.nextInt(5);
-
-                        Location loc = new Location(player.getWorld(), x, y, z);
-                        entity.setVelocity(VectorLocToTarget(entity.getLocation(), loc));
+                        entity.setVelocity(VectorArrowToTarget(entity.getLocation(), player));
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation(), 50, dustOptions);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, 1, 0), 50, dustOptions);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, -1, 0), 50, dustOptions);
                     }
                 }else if(timer == 2) {
                     for(Entity entity : piranas) {
@@ -436,26 +430,32 @@ public class Utils {
 
                         Location loc = new Location(player.getWorld(), x, y, z);
                         entity.setVelocity(VectorLocToTarget(entity.getLocation(), loc));
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation(), 50, dustOptions);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, 1, 0), 50, dustOptions);
+                        entity.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, -1, 0), 50, dustOptions);
                     }
                 }else if(timer == 1) {
-                    player.setHealth(8);
-                    player.setSwimming(false);
+                    for(Entity entity : piranas) {
+
+                        entity.setVelocity(VectorLocToTarget(entity.getLocation(), player.getLocation()));
+                    }
                 }else if(timer == 0) {
                     player.setSwimming(false);
                     player.setHealth(0);
-                    cuboidManager.setPlayer(null);
-                    animationManager.setPlayer(null);
-                    animationManager.setStarded(false);
+                    animation.setPlayer(null);
+                    animation.setStarted(false);
                     removeBlock(cuboidManager.getArea());
+                    this.cancel();
                 }
                 timer--;
             }
-        }.runTaskTimerAsynchronously(Spik.getINSTANCE(), 0, 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
-    public static void playBurnedAnimation(Player player, AnimationManager animationManager) {
+    public static void playBurnedAnimation(Player player, Animation animation) {
         List<Location> bloks = new ArrayList<>();
-        Location loc = animationManager.getLocPlayer();
+        Location loc = animation.getLocPlayer();
         new BukkitRunnable(){
             int timer = 10;
             @Override
@@ -515,16 +515,16 @@ public class Utils {
                 }else if(timer == 0) {
                 removeBlock(bloks);
                 this.cancel();
-                animationManager.setPlayer(null);
-                animationManager.setStarded(false);
+                animation.setPlayer(null);
+                animation.setStarted(false);
                 }
                 timer--;
             }
-        }.runTaskTimer(Spik.getINSTANCE(), 0, 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
-    public static void playCauldronAnimation(Player player, AnimationManager animationManager) {
-        Location loc = animationManager.getLocPlayer();
+    public static void playCauldronAnimation(Player player, Animation animation) {
+        Location loc = animation.getLocPlayer();
         List<Location> block = new ArrayList<>();
         new BukkitRunnable() {
             int timer = 0;
@@ -577,7 +577,7 @@ public class Utils {
                 }
                 timer++;
             }
-        }.runTaskTimer(Spik.getINSTANCE(), 0, 20);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
     public static Vector VectorArrowToTarget(Location loc, Player player) {
@@ -632,5 +632,27 @@ public class Utils {
                 iter.remove();
             }
         }
+    }
+
+    public static void addBlock(List<Location> block, Material mat) {
+        Iterator<Location> iter = block.iterator();
+        while (iter.hasNext()) {
+            Location loc = iter.next();
+            if (block.contains(loc)) {
+                loc.getBlock().setType(mat);
+                iter.remove();
+            }
+        }
+    }
+    public static Location parseStringToLoc(String string, World world) {
+        String[] parsedLoc = string.split(",");
+        double x = Double.parseDouble(parsedLoc[0]);
+        double y = Double.parseDouble(parsedLoc[1]);
+        double z = Double.parseDouble(parsedLoc[2]);
+
+        return new Location(world, x, y ,z);
+    }
+    public static String unparseLocToString(Location loc) {
+        return loc.getX() + "," + loc.getY() + "," + loc.getZ();
     }
 }

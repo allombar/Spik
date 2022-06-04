@@ -1,21 +1,21 @@
-package be.symbiosis.spik.Manager;
+package be.symbiosis.spik.Manager.Animation;
 
+import be.symbiosis.spik.Spik;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class AnimationManager {
-
-    Location locPlayer;
-    String AnimationName;
-    boolean isStarded;
-    Player player;
-
-    public AnimationManager(Location locPlayer, String AnimationName) {
+public class Animation {
+    private String AnimationName;
+    private final Location locPlayer;
+    private Boolean isStarted;
+    private Player player;
+    public Animation(Location locPlayer, String AnimationName) {
         this.AnimationName = AnimationName;
         this.locPlayer = locPlayer;
-        this.isStarded = false;
+        this.isStarted = false;
         this.player = null;
     }
+
 
     public Player getPlayer() {
         return player;
@@ -25,16 +25,16 @@ public class AnimationManager {
         this.player = player;
     }
 
-    public boolean isStarded() {
-        return isStarded;
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public void setAnimationName(String animationName) {
         AnimationName = animationName;
     }
 
-    public void setStarded(boolean starded) {
-        isStarded = starded;
+    public void setStarted(boolean started) {
+        isStarted = started;
     }
 
     public Location getLocPlayer() {

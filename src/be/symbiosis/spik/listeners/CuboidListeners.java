@@ -1,8 +1,8 @@
 package be.symbiosis.spik.listeners;
 
-import be.symbiosis.spik.Manager.CuboidManager;
-import be.symbiosis.spik.Manager.GamePlayer;
+import be.symbiosis.spik.Manager.GamePlayerManager;
 import be.symbiosis.spik.Spik;
+import be.symbiosis.spik.SpikCore;
 import org.bukkit.event.Listener;
 
 import org.bukkit.Bukkit;
@@ -20,25 +20,22 @@ public class CuboidListeners implements Listener {
 
         if(e.getAction() == Action.LEFT_CLICK_BLOCK) {
             if(player.getItemInHand().getType() == Material.PAPER) {
-                GamePlayer gp;
+                GamePlayerManager gp;
                 e.setCancelled(true);
 
-                if(GamePlayer.gamePlayers.get(player.getName()) == null) {
-                    gp = new GamePlayer(player.getName());
+                if(GamePlayerManager.gamePlayers.get(player.getName()) == null) {
+                    gp = new GamePlayerManager(player.getName());
                 }else {
-                    gp = GamePlayer.gamePlayers.get(player.getName());
+                    gp = GamePlayerManager.gamePlayers.get(player.getName());
                 }
 
                 if(gp.getPos1() == null) {
                     gp.setPos1(e.getClickedBlock().getLocation());
                     player.sendMessage("§aPosition 1 de votre cuboid définie");
 
-                    Bukkit.getScheduler().runTaskLater(Spik.getINSTANCE(), new Runnable() {
-                        @Override
-                        public void run() {
-                            gp.setPos1(null);
-                            gp.setPos2(null);
-                        }
+                    Bukkit.getScheduler().runTaskLater(SpikCore.GetInstance(), () -> {
+                        gp.setPos1(null);
+                        gp.setPos2(null);
                     }, 20*60*5);
                     return;
                 }
@@ -54,12 +51,9 @@ public class CuboidListeners implements Listener {
                         return;
                     }
                 }
-                Bukkit.getScheduler().runTaskLater(Spik.getINSTANCE(), new Runnable() {
-                    @Override
-                    public void run() {
-                        gp.setPos1(null);
-                        gp.setPos2(null);
-                    }
+                Bukkit.getScheduler().runTaskLater(SpikCore.GetInstance(), () -> {
+                    gp.setPos1(null);
+                    gp.setPos2(null);
                 }, 20*60*1);
                 player.sendMessage("§aPosition 2 de votre cuboid définie");
                 player.sendMessage("§cFaite maintenant §b/cuboid set [PlayerLoc] [name]");

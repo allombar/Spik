@@ -1,13 +1,12 @@
 package be.symbiosis.spik.commands;
 
-import be.symbiosis.spik.Manager.AnimationManager;
-import be.symbiosis.spik.Spik;
+import be.symbiosis.spik.SpikCore;
+import be.symbiosis.spik.Utils.Utils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sun.security.provider.ConfigFile;
 
 public class ChooseAreaCMD implements CommandExecutor {
     @Override
@@ -30,7 +29,7 @@ public class ChooseAreaCMD implements CommandExecutor {
                         "§e4- §3Drowned\n" +
                         "§e5- §3Piranha\n" +
                         "§e6- §3Burned\n" +
-                        "§e7- §3FallingDown\n" +
+                        "§e7- §3FallingHumanDown\n" +
                         "§e8- §3Cauldron\n";
                 if(strings.length == 0) {
                     player.sendMessage(message);
@@ -55,14 +54,8 @@ public class ChooseAreaCMD implements CommandExecutor {
 
                     World world = player.getWorld();
 
-                    String key = "animations."+strings[1];
-                    Spik.getINSTANCE().getConfig().set(key+".pos", strings[2]);
-                    Spik.getINSTANCE().getConfig().set(key+".world", player.getWorld().getName());
-                    Spik.getINSTANCE().save();
-
-                    AnimationManager animationManager = new AnimationManager(Spik.getINSTANCE().parseStringToLoc(strings[2], world), strings[1]);
-                    Spik.animations.add(animationManager);
-
+                    SpikCore.GetAnimationManager().AddAnimationYML(strings[1], strings[2], world);
+                    SpikCore.GetAnimationManager().AddAnimation(Utils.parseStringToLoc(strings[2], world), strings[1]);
                     player.sendMessage("L'animation "+strings[1]+" est maintenant opérationel");
 
 
@@ -78,17 +71,13 @@ public class ChooseAreaCMD implements CommandExecutor {
                         player.sendMessage(message);
                         return true;
                     }
-                    if(Spik.INSTANCE.getAnimationToString(strings[1]) == null) {
+                    if(SpikCore.GetAnimationManager().GetAnimation(strings[1]) == null) {
                         player.sendMessage("§4Erreur: §cCette animation n'existe pas");
                         return true;
                     }
-                    String key = "animations."+strings[1];
-                    Spik.INSTANCE.getConfig().set(key+".pos", null);
-                    Spik.INSTANCE.getConfig().set(key+".world", null);
-                    Spik.INSTANCE.getConfig().set("nameAnim.", null);
-                    Spik.INSTANCE.save();
 
-                    Spik.animations.remove(Spik.INSTANCE.getAnimationToString(strings[1]));
+                    SpikCore.GetAnimationManager().RemoveAnimationYML(strings[1]);
+                    SpikCore.GetAnimationManager().RemoveAnimation(strings[1]);
                 }
             }
         }
@@ -111,11 +100,7 @@ public class ChooseAreaCMD implements CommandExecutor {
             return true;
         }else if(string.equalsIgnoreCase("Piranha")) {
             return true;
-        }else if(string.equalsIgnoreCase("Burned")) {
-            return true;
-        }else {
-            return false;
-        }
+        }else return string.equalsIgnoreCase("Burned");
     }
 
 }
