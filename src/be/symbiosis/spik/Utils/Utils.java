@@ -3,21 +3,17 @@ package be.symbiosis.spik.Utils;
 import be.symbiosis.spik.Manager.Animation.Animation;
 import be.symbiosis.spik.Manager.Animation.AnimationManager;
 import be.symbiosis.spik.Manager.CuboidManager;
-import be.symbiosis.spik.Spik;
 import be.symbiosis.spik.SpikCore;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
+import net.minecraft.server.v1_16_R3.ItemFireworks;
 import org.bukkit.*;
 import org.bukkit.Color;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -92,10 +88,10 @@ public class Utils {
         List<Entity> fireball = new ArrayList<>();
         List<Location> block = new ArrayList<>();
         new BukkitRunnable(){
-            int timer = 10;
+            int timer = 0;
             @Override
             public void run() {
-                if(timer == 9) {
+                if(timer == 0) {
                     player.teleport(new Location(player.getWorld(), loc.getX(), loc.getY(), loc.getZ(), 180, 0));
 
                     block.add(createBlockAtPos(player.getLocation(), Material.DARK_OAK_FENCE, 1,0, 0));
@@ -115,12 +111,12 @@ public class Utils {
                     block.add(createBlockAtPos(player.getLocation(), Material.DARK_OAK_SLAB, 1,4, 0));
                     block.add(createBlockAtPos(player.getLocation(), Material.DARK_OAK_SLAB, -1,4, 0));
 
-                    player.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, 1000);
-                }else if(timer == 8) {
-                    player.teleport(new Location(player.getWorld(), loc.getX(), loc.getY()+1.5, loc.getZ(), 180, 0));
+                    player.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, 200);
+                }else if(timer == 2) {
+                    player.teleport(new Location(player.getWorld(), loc.getX(), loc.getY()+1, loc.getZ(), 180, 0));
                     player.setAllowFlight(true);
                     player.setFlying(true);
-                }else if(timer == 7) {
+                }else if(timer == 3) {
                     animation.setPlayer(player);
                     Location cannon = new Location(player.getWorld(), player.getLocation().getX()+0.5, player.getLocation().getY()+0.5, player.getLocation().getZ()-12.5);
                     cannon.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, cannon, 1000);
@@ -154,30 +150,28 @@ public class Utils {
                     block.add(createBlockAtPos(player.getLocation(), Material.DARK_OAK_LOG, 1, -1, -15));
                     block.add(createBlockAtPos(player.getLocation(), Material.DARK_OAK_LOG, -1, -1, -15));
 
-                }else if(timer == 6 || timer == 5 || timer == 4 || timer == 3) {
-                    Location cannon = new Location(player.getWorld(), player.getLocation().getX()+0.5, player.getLocation().getY()+0.5, player.getLocation().getZ()-9);
-                        if(timer == 6) {
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1.0F);
-                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
-                        }else if(timer == 5) {
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.YELLOW, 2.0F);
-                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
-                        }else if(timer == 4) {
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 3.0F);
-                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
-                        }else if(timer == 3) {
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
-                            cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
-                        }
-                }else if(timer == 2) {
+                }else if(timer == 4 || timer == 5 || timer == 6 || timer == 7) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+0.5, player.getLocation().getZ()-9);
+                    if (timer == 4) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    } else if(timer == 5) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.YELLOW, 2.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    } else if(timer == 6) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 3.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    } else if(timer == 7) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    }
+                } else if(timer == 8) {
                     Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()-9);
                     Entity entity = createNPCFireball(cannon);
                     fireball.add(entity);
                     System.out.println(fireball.size());
                     entity.setVelocity(VectorArrowToTarget(cannon, player));
-                }else if(timer == 1) {
-                    player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, player.getLocation(), 50);
-                    player.setHealth(0.0);
+                } else if(timer == 9) {
                     Iterator<Entity> iter = fireball.iterator();
                     while (iter.hasNext()) {
                         Entity entity = iter.next();
@@ -186,7 +180,7 @@ public class Utils {
                             iter.remove();
                         }
                     }
-                }else if(timer == 0) {
+                } else if(timer == 12) {
                     animation.setStarted(false);
                     animation.setPlayer(null);
                     player.setFlying(false);
@@ -196,30 +190,9 @@ public class Utils {
                     removeBlock(block);
                     this.cancel();
                 }
-                timer--;
-            }
-        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
-    }
-
-    public static void playAnimationFallingDown(Player player, Location loc, Animation animation) {
-        new BukkitRunnable() {
-            int timer = 0;
-            final World world = player.getWorld();
-            @Override
-            public void run () {
-                if (timer <= 9) {
-                    player.teleport(loc);
-                    player.setVelocity(new Location(player.getWorld(), player.getLocation().getX() - player.getLocation().getX() + getRandomNumber(-50, 50), world.getHighestBlockYAt(0, 0) - world.getHighestBlockYAt(0, 0) + getRandomNumber(-25, 25), player.getLocation().getZ() - player.getLocation().getZ() + getRandomNumber(-50, 50)).toVector());
-                    player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 500);
-                }
-                if (timer == 10) {
-                    player.setFlying(false);
-                    player.setAllowFlight(false);
-                    this.cancel();
-                }
                 timer++;
             }
-        }.runTaskTimer(SpikCore.GetInstance(), 0, 10);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
     public static void playHumanCanonAnimation(Player player, Location loc, Animation animation) {
@@ -251,7 +224,9 @@ public class Utils {
                     block.add(createBlockAtPos(loc, Material.DARK_OAK_LOG, -1, 0, 3));
                     block.add(createBlockAtPos(loc, Material.DARK_OAK_LOG, 1, 0, 6));
                     block.add(createBlockAtPos(loc, Material.DARK_OAK_LOG, -1, 0, 6));
-                } else if (timer == 1) {
+                } else if (timer == 3) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+12, player.getLocation().getZ()-18);
+                    cannon.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, cannon, 200);
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -1, 12, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 1, 12, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 0, 12, -22));
@@ -266,7 +241,7 @@ public class Utils {
                     block.add(createBlockAtPos(loc, Material.RED_CONCRETE, 1, 10, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 0, 10, -22));
                     block.add(createBlockAtPos(loc, Material.RED_CONCRETE, -2, 10, -22));
-                    block.add(createBlockAtPos(loc, Material.RED_CONCRETE, 2, 10, -2));
+                    block.add(createBlockAtPos(loc, Material.RED_CONCRETE, 2, 10, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -3, 10, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 3, 10, -22));
 
@@ -317,20 +292,41 @@ public class Utils {
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, -1, 4, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 1, 4, -22));
                     block.add(createBlockAtPos(loc, Material.QUARTZ_BLOCK, 0, 4, -22));
-                    player.setVelocity(new Vector(0, 1, -200).multiply(4));
-                    player.showPlayer(SpikCore.GetInstance(), player);
-                } else if (timer == 2) {
-                    block.forEach(item -> {
-                        item.getBlock().setType(Material.AIR);
-                        block.remove(item);
-                    });
+                } else if(timer == 4 || timer == 5 || timer == 6 || timer == 7) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX(), player.getLocation().getY()+2, player.getLocation().getZ()+1);
+                    if(timer == 4) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    }else if(timer == 5) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.YELLOW, 2.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    }else if(timer == 6) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.ORANGE, 3.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    }else if(timer == 7) {
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                        cannon.getWorld().spawnParticle(Particle.REDSTONE, cannon, 50, dustOptions);
+                    }
                 }
-                if (timer == 3) {
+                else if (timer == 8) {
+                    Location cannon = new Location(player.getWorld(), player.getLocation().getX()+0.5, player.getLocation().getY()+0.5, player.getLocation().getZ());
+                    cannon.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, cannon, 1000);
+                    player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                    player.setVelocity(vectorPlayerToBlock(player, block.get(43).getBlock()).multiply(4));
+                } else if (timer == 9) {
+                    player.setHealth(0);
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 5.0F);
+                    player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation(), 50, dustOptions);
+                    player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, 1, 0), 50, dustOptions);
+                }
+                else if (timer == 12) {
+                    removeBlock(block);
+                    animation.setStarted(false);
                     this.cancel();
                 }
                 timer++;
             }
-        }.runTaskTimer(SpikCore.GetInstance(), 0, 10);
+        }.runTaskTimer(SpikCore.GetInstance(), 0, 20);
     }
 
     public static void playCuboidAnimation(Player player, CuboidManager cuboidManager, Animation animation) {
@@ -341,7 +337,7 @@ public class Utils {
             public void run() {
                 if(timer == 10) {
                     Location loc = cuboidManager.getMiddle();
-                    player.teleport(loc.add(0.5, 1, 0.5));
+                    player.teleport(newLocation(loc, 0.5, 1, 0.5));
                     player.setSwimming(true);
                     player.getWorld().getBlockAt(player.getLocation().add(0, 5, 0)).setType(Material.WATER);
                     player.getWorld().spawnParticle(Particle.FALLING_WATER, player.getLocation().add(0, 4, 0), 500);
@@ -356,20 +352,50 @@ public class Utils {
                     addBlock(cuboidManager.SetBlockOnCuboid(3), Material.WATER);
                 }else if(timer == 5) {
                     addBlock(cuboidManager.SetBlockOnCuboid(4), Material.WATER);
-                }else if(timer == 4) {
-                    addBlock(cuboidManager.SetBlockOnCuboid(4), Material.WATER);
-                }else if(timer == 3) {
-                    player.setHealth(6);
-                    player.setSwimming(true);
-                }else if(timer == 2) {
-                    player.setHealth(4);
-                    player.setSwimming(false);
-                }else if(timer == 1) {
-                    player.setHealth(2);
-                    player.setSwimming(true);
-                }else if(timer == 0) {
-                    player.setSwimming(false);
-                    player.setHealth(0);
+                }else if(timer == 6) {
+                    addBlock(cuboidManager.SetBlockOnCuboid(5), Material.WATER);
+                }else if(timer == 7) {
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 1, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                }else if(timer == 8) {
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 2, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                }else if(timer == 9) {
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 3, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                }else if(timer == 10) {
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 4, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                }else if(timer == 11){
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 5, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                }else if(timer == 12) {
+                    double health = player.getHealth();
+                    player.setHealth(health-2);
+                    player.getWorld().spawnParticle(Particle.WATER_BUBBLE, newLocation(player.getLocation(), 0, 5, 0), 10);
+                    player.playEffect(EntityEffect.HURT_DROWN);
+                } else if(timer == 13) {
+                    cuboidManager.DelBlockOnCuboid(0);
+                }else if(timer == 14) {
+                    cuboidManager.DelBlockOnCuboid(1);
+                }else if(timer == 15) {
+                    cuboidManager.DelBlockOnCuboid(2);
+                }else if(timer == 16) {
+                    cuboidManager.DelBlockOnCuboid(3);
+                }else if(timer == 17) {
+                    cuboidManager.DelBlockOnCuboid(4);
+                }
+                else if(timer == 18) {
                     animation.setPlayer(null);
                     animation.setStarted(false);
                     removeBlock(cuboidManager.getArea());
@@ -515,8 +541,6 @@ public class Utils {
                 }else if(timer == 0) {
                 removeBlock(bloks);
                 this.cancel();
-                animation.setPlayer(null);
-                animation.setStarted(false);
                 }
                 timer--;
             }
@@ -524,55 +548,137 @@ public class Utils {
     }
 
     public static void playCauldronAnimation(Player player, Animation animation) {
-        Location loc = animation.getLocPlayer();
+        World world = player.getWorld();
+        Location loc = parseStringToLoc(AnimationManager.getConfig().getString("animations.cauldron.pos"), world);
         List<Location> block = new ArrayList<>();
+        final Entity[] entity = {null};
         new BukkitRunnable() {
             int timer = 0;
             @Override
             public void run() {
                 if (timer == 0)
                 {
-                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 0, 0));
+                    // couche 1
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 0, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 0, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 0, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 0, -2));
 
-                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 0, 1));
-                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 0, 1));
-                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 0, 1));
+                    // couche 2
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 1, 0));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 1, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 1, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, 1));
 
-                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 0, -1));
-                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 0, 0));
-                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 0, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, 0));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, 1));
 
-                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 0, -1));
-                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 0, 0));
-                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 0, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 1, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 1, 0));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 1, -1));
 
-                    block.add(createBlockAtPos(loc, Material.BRICK, -1, 0, 2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 1, 0, 2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 2, 0, 2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 0, 0, 2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, -2, 0, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 1, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 1, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 1, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 1, 2));
 
-                    block.add(createBlockAtPos(loc, Material.BRICK, -1, 0, -2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 1, 0, -2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 2, 0, -2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 0, 0, -2));
-                    block.add(createBlockAtPos(loc, Material.BRICK, -2, 0, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 1, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 1, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 1, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 1, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 1, -2));
 
-                    block.add(createBlockAtPos(loc, Material.BRICK, -2, 0, 1));
-                    block.add(createBlockAtPos(loc, Material.BRICK, -2, 0, -1));
-                    block.add(createBlockAtPos(loc, Material.BRICK, -2, 0, 0));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 1, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 1, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 1, 0));
 
-                    block.add(createBlockAtPos(loc, Material.BRICK, 2, 0, 1));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 2, 0, -1));
-                    block.add(createBlockAtPos(loc, Material.BRICK, 2, 0, 0));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 1, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 1, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 1, 0));
+                    //couche 3
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 2, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 2, 1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 2, 1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 2, 1));
 
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 2, -1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 2, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 2, 1));
 
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 2, -1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 2, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 2, -1));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 2, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 2, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 2, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 2, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 2, 2));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 2, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 2, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 2, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 2, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 2, -2));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 2, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 2, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 2, 0));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 2, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 2, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 2, 0));
+                    // couche 4
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 3, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 3, 1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 3, 1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 3, 1));
+
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 3, -1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 3, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 1, 3, 1));
+
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 3, -1));
+                    block.add(createBlockAtPos(loc, Material.LAVA, -1, 3, 0));
+                    block.add(createBlockAtPos(loc, Material.LAVA, 0, 3, -1));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 3, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 3, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 3, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 3, 2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 3, 2));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -1, 3, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 1, 3, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 3, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 0, 3, -2));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 3, -2));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 3, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 3, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, -2, 3, 0));
+
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 3, 1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 3, -1));
+                    block.add(createBlockAtPos(loc, Material.BEDROCK, 2, 3, 0));
                 }
                 if (timer == 1) {
-
+                    player.teleport(newLocation(loc, 0.5, 10, 0.5));
+                    player.setFlying(true);
+                }
+                if (timer == 3) {
+                    player.setFlying(false);
+                }
+                if(timer == 5) {
+                    entity[0] = setSkeletonToPlayerPos(player.getName(),newLocation(loc, 0.5, 2.5, 0.5));
+                    Bukkit.broadcastMessage("id of entity: " + entity[0].getEntityId());
                 }
                 if (timer == 10) {
+                    entity[0].remove();
                     removeBlock(block);
+                    animation.setStarted(false);
                     this.cancel();
                 }
                 timer++;
@@ -586,32 +692,17 @@ public class Utils {
         return b.subtract(a).normalize();//create vector
     }
 
+    public static Vector vectorPlayerToBlock(Player player, Block block) {
+        Vector a = player.getLocation().toVector();//arrow loc
+        Vector b = block.getLocation().toVector();//target
+        return b.subtract(a).normalize();//create vector
+    }
+
     public static Vector VectorLocToTarget(Location loc, Location loctarget) {
         Vector a = loc.toVector();//arrow loc
         Vector b = loctarget.toVector();//target
         return b.subtract(a).normalize();//create vector
     }
-
-    public static Entity createNPC(Location loc) {
-        NPC entity = CitizensAPI.getNPCRegistry().createNPC(EntityType.ARROW, "");
-        entity.teleport(loc, PlayerTeleportEvent.TeleportCause.COMMAND);
-        entity.spawn(loc);
-        entity.getEntity().setGravity(false);
-        entity.getEntity().setGlowing(true);
-        entity.getEntity().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5);
-        return entity.getEntity();
-    }
-
-    public static Entity createNPCFireball(Location loc) {
-        NPC entity = CitizensAPI.getNPCRegistry().createNPC(EntityType.FIREBALL, "");
-        entity.teleport(loc, PlayerTeleportEvent.TeleportCause.COMMAND);
-        entity.spawn(loc);
-        entity.getEntity().setGravity(false);
-        entity.getEntity().setGlowing(true);
-        entity.getEntity().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 50);
-        return entity.getEntity();
-    }
-
     public static int getRandomNumber(int min, int max) {
         Random random = new Random();
         return random.nextInt(max + 1 - min) + min;

@@ -19,7 +19,7 @@ public class CuboidListeners implements Listener {
         Player player = e.getPlayer();
 
         if(e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if(player.getItemInHand().getType() == Material.PAPER) {
+            if(player.getItemOnCursor().getType() == Material.PAPER) {
                 GamePlayerManager gp;
                 e.setCancelled(true);
 

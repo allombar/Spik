@@ -3,7 +3,6 @@ package be.symbiosis.spik.commands;
 import be.symbiosis.spik.Manager.Animation.Animation;
 import be.symbiosis.spik.Manager.Animation.AnimationManager;
 import be.symbiosis.spik.Manager.CuboidManager;
-import be.symbiosis.spik.Spik;
 import be.symbiosis.spik.SpikCore;
 import be.symbiosis.spik.Utils.Utils;
 import org.bukkit.Bukkit;
@@ -16,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class TargetCMD implements CommandExecutor {
+public class TargetCommand implements CommandExecutor {
     List<String> animationList = new ArrayList<>();
 
     @Override
@@ -51,7 +50,7 @@ public class TargetCMD implements CommandExecutor {
             Player target = Bukkit.getPlayer(strings[0]);
 
             if (strings.length == 2) {
-                VerifName(strings[1], target);
+                VerifName(strings[1].toLowerCase(), target);
             } else {
                 aleatoireAnimation(target);
             }
@@ -74,7 +73,7 @@ public class TargetCMD implements CommandExecutor {
         Random rand = new Random();
         int random = rand.nextInt(max);
 
-        String nameRandom = animationList.get(random);
+        String nameRandom = animationList.get(random).toLowerCase();
 
         if (SpikCore.GetAnimationManager().GetAnimation(nameRandom) == null) {
             player.sendMessage("§4Erreur: §cAttentez cette animation est déjà en cour");
@@ -84,15 +83,13 @@ public class TargetCMD implements CommandExecutor {
 
         Animation animation = SpikCore.GetAnimationManager().GetAnimation(nameRandom);
         Location loc = animation.getLocPlayer();
-
+        animation.setStarted(true);
         if (nameRandom.equalsIgnoreCase("Arrow")) {
             Utils.playAnimationArrow(player, animation);
         } else if (nameRandom.equalsIgnoreCase("Canon")) {
             Utils.playAnimationCanon(player, loc, animation);
         } else if (nameRandom.equalsIgnoreCase("HumanCanon")) {
             Utils.playHumanCanonAnimation(player, loc, animation);
-        } else if (nameRandom.equalsIgnoreCase("FallingHumanDown")) {
-            Utils.playAnimationFallingDown(player, loc, animation);
         } else if (nameRandom.equalsIgnoreCase("Cauldron")) {
             Utils.playCauldronAnimation(player, animation);
         } else if (nameRandom.equalsIgnoreCase("Drowned")) {
@@ -101,7 +98,6 @@ public class TargetCMD implements CommandExecutor {
             Utils.playBurnedAnimation(player, animation);
         }
 
-        animation.setStarted(true);
         animationList.removeAll(animationList);
     }
 
@@ -112,15 +108,13 @@ public class TargetCMD implements CommandExecutor {
         }
         Animation anim = SpikCore.GetAnimationManager().GetAnimation(nameRandom);
         Location loc = anim.getLocPlayer();
-
+        anim.setStarted(true);
         if (nameRandom.equalsIgnoreCase("Arrow")) {
             Utils.playAnimationArrow(player, anim);
         } else if (nameRandom.equalsIgnoreCase("Canon")) {
             Utils.playAnimationCanon(player, loc, anim);
         } else if (nameRandom.equalsIgnoreCase("HumanCanon")) {
             Utils.playHumanCanonAnimation(player, loc, anim);
-        } else if (nameRandom.equalsIgnoreCase("FallingHumanDown")) {
-            Utils.playAnimationFallingDown(player, loc, anim);
         } else if (nameRandom.equalsIgnoreCase("Cauldron")) {
             Utils.playCauldronAnimation(player, anim);
         } else if (nameRandom.equalsIgnoreCase("Drowned")) {
@@ -140,7 +134,5 @@ public class TargetCMD implements CommandExecutor {
         } else if (nameRandom.equalsIgnoreCase("Burned")) {
             Utils.playBurnedAnimation(player, anim);
         }
-
-
     }
 }

@@ -5,12 +5,14 @@ import be.symbiosis.spik.SpikCore;
 import be.symbiosis.spik.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CuboidManager {
@@ -75,6 +77,15 @@ public class CuboidManager {
             }
         }
         return blocksLocation;
+    }
+
+    public void DelBlockOnCuboid(int AxeY) {
+        for (int x = minLoc.getBlockX(); maxLoc.getBlockX() >= x; x--) {
+            for (int z = minLoc.getBlockZ(); maxLoc.getBlockZ() >= z; z--) {
+                Location loc = new Location(minLoc.getWorld(), x, minLoc.getY() + AxeY, z);
+                loc.getBlock().setType(Material.AIR);
+            }
+        }
     }
 
     public static void loadConfig() {

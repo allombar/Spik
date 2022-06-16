@@ -25,14 +25,6 @@ public class Animation {
         this.player = player;
     }
 
-    public boolean isStarted() {
-        return isStarted;
-    }
-
-    public void setAnimationName(String animationName) {
-        AnimationName = animationName;
-    }
-
     public void setStarted(boolean started) {
         isStarted = started;
     }

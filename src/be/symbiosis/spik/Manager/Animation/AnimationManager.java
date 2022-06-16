@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AnimationManager {
@@ -43,7 +42,7 @@ public class AnimationManager {
 
     public Animation GetPlayerInAnimation(Player player) {
         for (Map.Entry<String, Animation> pair : _animations.entrySet()) {
-            Animation animation = _animations.get(pair.getValue().getAnimationName());
+            Animation animation = _animations.get(pair.getKey().toLowerCase());
             if(animation.getPlayer() == player) {
                 return animation;
             }
@@ -52,7 +51,7 @@ public class AnimationManager {
     }
 
     public void AddAnimationYML(String animationName, String loc, World world) {
-        String key = "animations." + animationName;
+        String key = "animations." + animationName.toLowerCase();
         getConfig().set(key+".pos", loc);
         getConfig().set(key+".world", world.getName());
         save();
@@ -99,10 +98,9 @@ public class AnimationManager {
         if(animationsSection != null) {
             for(String string : animationsSection.getKeys(false)) {
 
-                String loc =  animationsSection.getString(string + ".pos");
-                String world = animationsSection.getString(string + ".world");
-                AddAnimation(Utils.parseStringToLoc(loc, Bukkit.getWorld(world)), string);
-                System.out.println(_animations.size());
+                String loc =  animationsSection.getString(string.toLowerCase() + ".pos");
+                String world = animationsSection.getString(string.toLowerCase() + ".world");
+                AddAnimation(Utils.parseStringToLoc(loc, Bukkit.getWorld(world)), string.toLowerCase());
             }
         }
     }

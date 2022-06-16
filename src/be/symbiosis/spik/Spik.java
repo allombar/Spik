@@ -1,8 +1,8 @@
 package be.symbiosis.spik;
 
-import be.symbiosis.spik.commands.ChooseAreaCMD;
-import be.symbiosis.spik.commands.CuboidCMD;
-import be.symbiosis.spik.commands.TargetCMD;
+import be.symbiosis.spik.commands.AnimationCommand;
+import be.symbiosis.spik.commands.CuboidCommand;
+import be.symbiosis.spik.commands.TargetCommand;
 import be.symbiosis.spik.listeners.CuboidListeners;
 import be.symbiosis.spik.listeners.EventListener;
 
@@ -16,9 +16,9 @@ public class Spik extends JavaPlugin {
         INSTANCE = this;
 
         //commandes
-        getCommand("target").setExecutor(new TargetCMD());
-        getCommand("anim").setExecutor(new ChooseAreaCMD());
-        getCommand("cuboid").setExecutor(new CuboidCMD());
+        getCommand("target").setExecutor(new TargetCommand());
+        getCommand("anim").setExecutor(new AnimationCommand());
+        getCommand("cuboid").setExecutor(new CuboidCommand());
 
         //listeners
         getServer().getPluginManager().registerEvents(new EventListener(), this);
