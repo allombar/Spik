@@ -29,8 +29,7 @@ public class AnimationCommand implements CommandExecutor {
                         "§e4- §3Drowned\n" +
                         "§e5- §3Piranha\n" +
                         "§e6- §3Burned\n" +
-                        "§e7- §3FallingHumanDown\n" +
-                        "§e8- §3Cauldron\n";
+                        "§e7- §3Cauldron\n";
                 if (strings.length == 0) {
                     player.sendMessage(message);
                     return false;
@@ -47,16 +46,16 @@ public class AnimationCommand implements CommandExecutor {
                         return false;
                     }
 
-                    if (strings.length != 3) {
+                    if (strings.length != 4) {
                         player.sendMessage(message);
                         return false;
                     }
 
                     World world = player.getWorld();
 
-                    SpikCore.GetAnimationManager().AddAnimationYML(strings[1], strings[2], world);
-                    SpikCore.GetAnimationManager().AddAnimation(Utils.parseStringToLoc(strings[2], world), strings[1]);
-                    player.sendMessage("L'animation " + strings[1] + " est maintenant opérationel");
+                    SpikCore.GetAnimationManager().AddAnimationYML(strings[1], strings[2], strings[3], world);
+                    SpikCore.GetAnimationManager().AddAnimation(Utils.parseStringToLoc(strings[2], world), strings[1], Utils.parseStringToLoc(strings[3], world));
+                    player.sendMessage("§3L'animation §2§l" + strings[1] + " §3est maintenant opérationel");
 
 
                 } else if (strings[0].equalsIgnoreCase("del")) {
@@ -90,8 +89,6 @@ public class AnimationCommand implements CommandExecutor {
         } else if (string.equalsIgnoreCase("Canon")) {
             return true;
         } else if (string.equalsIgnoreCase("HumanCanon")) {
-            return true;
-        } else if (string.equalsIgnoreCase("FallingHumanDown")) {
             return true;
         } else if (string.equalsIgnoreCase("Cauldron")) {
             return true;

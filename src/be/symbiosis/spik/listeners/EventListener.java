@@ -11,8 +11,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import sun.security.provider.ConfigFile;
+
+import java.util.List;
 
 public class EventListener implements Listener {
 
@@ -22,6 +29,23 @@ public class EventListener implements Listener {
 
     if(SpikCore.GetAnimationManager().GetPlayerInAnimation(player) != null){
         event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if(SpikCore.GetAnimationManager().GetPlayerInAnimation(player) != null) {
+            SpikCore.GetAnimationManager().destroy();
+        }
+    }
+
+    @EventHandler
+    public void OnJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if(!player.hasPermission("spik.animation.fly") || !player.isOp()) {
+            player.setAllowFlight(false);
         }
     }
 
@@ -43,6 +67,9 @@ public class EventListener implements Listener {
                     .GetPlayerInAnimation(player)
                     .getAnimationName()
                     .equalsIgnoreCase("canon")) {
+                Animation animation = SpikCore.GetAnimationManager().GetPlayerInAnimation(player);
+                animation.setStarted(false);
+                animation.setPlayer(null);
                 player.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, player.getLocation(), 50);
                 player.setHealth(0.0);
             }

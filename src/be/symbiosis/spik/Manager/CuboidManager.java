@@ -79,15 +79,6 @@ public class CuboidManager {
         return blocksLocation;
     }
 
-    public void DelBlockOnCuboid(int AxeY) {
-        for (int x = minLoc.getBlockX(); maxLoc.getBlockX() >= x; x--) {
-            for (int z = minLoc.getBlockZ(); maxLoc.getBlockZ() >= z; z--) {
-                Location loc = new Location(minLoc.getWorld(), x, minLoc.getY() + AxeY, z);
-                loc.getBlock().setType(Material.AIR);
-            }
-        }
-    }
-
     public static void loadConfig() {
         file = new File(SpikCore.GetInstance().getDataFolder() + File.separator + "cuboid.yml");
 

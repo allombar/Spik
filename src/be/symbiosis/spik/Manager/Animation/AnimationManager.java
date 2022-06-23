@@ -1,6 +1,6 @@
 package be.symbiosis.spik.Manager.Animation;
 
-import be.symbiosis.spik.Spik;
+import be.symbiosis.spik.Manager.Localisation.LocalisationManager;
 import be.symbiosis.spik.SpikCore;
 import be.symbiosis.spik.Utils.Utils;
 import org.bukkit.Bukkit;
@@ -38,6 +38,25 @@ public class AnimationManager {
         }
         Animation anim = _animations.get(AnimationName);
         return anim;
+    }
+
+    public void destroy() {
+        if (_animations.size() == 0)
+            return;
+
+        for (Map.Entry<String, Animation> pair : _animations.entrySet()) {
+            Animation animation = _animations.get(pair.getKey().toLowerCase());
+            if (animation.getTask() == null) {
+                continue;
+            } else {
+                animation.getTask().cancel();
+                animation.setStarted(false);
+                animation.setPlayer(null);
+            }
+        }
+
+        if(LocalisationManager.specLocMap.size() != 0)
+            LocalisationManager.specLocMap.clear();
     }
 
     public Animation GetPlayerInAnimation(Player player) {

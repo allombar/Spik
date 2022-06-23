@@ -59,6 +59,7 @@ public class TargetCommand implements CommandExecutor {
     }
 
     public void aleatoireAnimation(Player player) {
+        SpikCore.GetAnimationManager().destroy();
         ConfigurationSection animationsSection = AnimationManager.getConfig().getConfigurationSection("animations");
         if (animationsSection == null) {
             player.sendMessage("§4Erreur: §cIl n'y a pas d'animation enregistré");
@@ -76,7 +77,7 @@ public class TargetCommand implements CommandExecutor {
         String nameRandom = animationList.get(random).toLowerCase();
 
         if (SpikCore.GetAnimationManager().GetAnimation(nameRandom) == null) {
-            player.sendMessage("§4Erreur: §cAttentez cette animation est déjà en cour");
+            player.sendMessage("§4Erreur: §cAttentez cette animation est déjà en cours");
             animationList.removeAll(animationList);
             return;
         }
@@ -102,37 +103,38 @@ public class TargetCommand implements CommandExecutor {
     }
 
     public void VerifName(String nameRandom, Player player) {
-        if (SpikCore.GetAnimationManager().GetAnimation(nameRandom) == null) {
-            player.sendMessage("Erreur: Cette animation " + nameRandom + " est déjà utilisé ou n'éxiste pas");
-            return;
-        }
+        SpikCore.GetAnimationManager().destroy();
+        //if (SpikCore.GetAnimationManager().GetAnimation(nameRandom) == null) {
+            //player.sendMessage("Erreur: Cette animation " + nameRandom + " est déjà utilisé ou n'existe pas");
+            //return;
+        //}
         Animation anim = SpikCore.GetAnimationManager().GetAnimation(nameRandom);
         Location loc = anim.getLocPlayer();
         anim.setStarted(true);
         if (nameRandom.equalsIgnoreCase("Arrow")) {
-            Utils.playAnimationArrow(player, anim);
+            anim.setTask(Utils.playAnimationArrow(player, anim));
         } else if (nameRandom.equalsIgnoreCase("Canon")) {
-            Utils.playAnimationCanon(player, loc, anim);
+            anim.setTask(Utils.playAnimationCanon(player, loc, anim));
         } else if (nameRandom.equalsIgnoreCase("HumanCanon")) {
-            Utils.playHumanCanonAnimation(player, loc, anim);
+            anim.setTask(Utils.playHumanCanonAnimation(player, loc, anim));
         } else if (nameRandom.equalsIgnoreCase("Cauldron")) {
-            Utils.playCauldronAnimation(player, anim);
+            anim.setTask(Utils.playCauldronAnimation(player, anim));
         } else if (nameRandom.equalsIgnoreCase("Drowned")) {
             if (CuboidManager.GetCuboidByIndex(0) == null) {
                 player.sendMessage("§4Erreur: §caucun cuboid n'est disponible pour le moment.");
                 return;
             }
             CuboidManager cuboidManager = CuboidManager.GetCuboidByIndex(0);
-            Utils.playCuboidAnimation(player, cuboidManager, anim);
+            anim.setTask(Utils.playCuboidAnimation(player, cuboidManager, anim));
         } else if (nameRandom.equalsIgnoreCase("Piranha")) {
             if (CuboidManager.GetCuboidByIndex(0) == null) {
                 player.sendMessage("§4Erreur: §caucun cuboid n'est disponible pour le moment.");
                 return;
             }
             CuboidManager cuboidManager = CuboidManager.GetCuboidByIndex(0);
-            Utils.playerCuboidPiranaAnimation(player, cuboidManager, anim);
+            anim.setTask(Utils.playerCuboidPiranaAnimation(player, cuboidManager, anim));
         } else if (nameRandom.equalsIgnoreCase("Burned")) {
-            Utils.playBurnedAnimation(player, anim);
+            anim.setTask(Utils.playBurnedAnimation(player, anim));
         }
     }
 }

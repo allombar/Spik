@@ -1,5 +1,6 @@
 package be.symbiosis.spik;
 
+import be.symbiosis.spik.Manager.Localisation.LocalisationManager;
 import be.symbiosis.spik.commands.AnimationCommand;
 import be.symbiosis.spik.commands.CuboidCommand;
 import be.symbiosis.spik.commands.TargetCommand;

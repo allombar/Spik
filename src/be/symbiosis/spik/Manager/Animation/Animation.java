@@ -3,6 +3,7 @@ package be.symbiosis.spik.Manager.Animation;
 import be.symbiosis.spik.Spik;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 public class Animation {
     private String AnimationName;
@@ -25,9 +26,6 @@ public class Animation {
         this.player = player;
     }
 
-    public void setStarted(boolean started) {
-        isStarted = started;
-    }
 
     public Location getLocPlayer() {
         return locPlayer;
